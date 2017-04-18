@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>Document</title>
+	<!-- 方法一 -->
+	<!-- 横屏 -->
+	<link rel="stylesheet" media="all and (orientation:landscape)" href="landscape.css" />
+	<!-- 竖屏 -->
+	<link rel="stylesheet" media="all and (orientation:portrait)" href="portrait.css" />
+	
+
+	<!-- 方法二 -->
+	<style type="text/css">
+		/*横屏*/
+		@media screen and (orientation:portrait){
+			.demo2{color: #ff0000}
+		}
+		/*竖屏*/
+		@media screen and (orientation:landscape){
+			.demo2{color: #008000}
+		}
+	</style>
+
+
+	<!-- 方法三 -->
+	<script type="text/javascript">
+		var mql = window.matchMedia("(orientation: portrait)");
+		function onMatchMeidaChange(mql){
+		    if(mql.matches) {
+		        // 竖屏
+		        console.log("竖屏");
+		    }else {
+		        // 横屏
+		        console.log("横屏");
+		    }
+		}
+		onMatchMeidaChange(mql);
+		mql.addListener(onMatchMeidaChange);
+	</script>
+
+
+	<!-- 方法四 -->
+	<script type="text/javascript">
+		function detectOrient(){
+		    if(window.innerHeight >= window.innerWidth) {
+		        // 竖屏
+		        console.log("竖屏");
+		    }else {
+		        // 横屏 
+		        console.log("横屏");
+		    }
+		}
+		detectOrient();
+		window.addEventListener('resize',detectOrient);
+	</script>
+
+
+	<!-- 方法五 屏幕分辨率是不会改变的，那么我们可以尝试比对页面宽高和屏幕分辨率来判断横竖屏。-->
+	<!-- 屏幕分辨率固定值为：screen.width 和 screen.height（需要注意，这里很重要的一点是：在移动端，屏幕翻转时，screen.width 和 screen.height 的值依然是不变的） -->
+	<!-- 若获取 当前页面的宽（document.documentElement.clientWidth），等于屏幕分辨率的宽(screen.width)，则可认定当前属于竖屏 -->
+	<!-- 若获取 当前页面的宽（document.documentElement.clientWidth），等于屏幕分辨率的高(screen.height)，则可认定当前属于横屏。 -->
+	<script type="text/javascript">
+		function detectOrient() {
+		    var storage = localStorage;
+		    var data = storage.getItem('J-recordOrientX');
+		    var w = document.documentElement.clientWidth,
+		        h = document.documentElement.clientHeight;
+		    var _Width = 0,_Height = 0;
+
+		    if(!data) {
+		        _Width = window.screen.width;
+		        _Height = window.screen.height;
+		        storage.setItem('J-recordOrientX',_Width + ',' + _Height);
+		    }else {
+		        var str = data.split(',');
+		        _Width = str[0];
+		        _Height = str[1];
+		    }
+		    if(w == _Width) {
+		        // 竖屏
+		        return;
+		    }
+		    if(w == _Height){
+		        // 横屏
+		        return;
+		    }
+		}
+		detectOrient();
+		window.addEventListener('resize',detectOrient);
+	</script>
+</head>
+<body>
+	<div class="demo1">判断横屏还是竖屏</div>
+	<div class="demo2">判断横屏还是竖屏</div>
+</body>
+</html>
